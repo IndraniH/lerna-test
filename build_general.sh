@@ -21,10 +21,12 @@ index=-1
 # Retrieve the modified packages
 for file in $files
 do
+  if [[ "$file" == *\/* ]] || [[ "$file" == *\\* ]]
+  then
     package="$(echo $file | cut -d '/' -f2)"
     echo -e "$package Changed."
     packages+=($package);
-    
+  fi
 done
 
 #echo "Changed packages are " ${packages[*]}
@@ -37,16 +39,18 @@ done
 
 l2=" ${packages[*]} "                    # add framing blanks
 for item in ${codebase_packages[@]}; do
+if (( ${#packages[@]} )); then
   if ! [[ $l2 =~ " $item " ]] ; then    # use $item as regexp
     result+=($item)
   fi
+  fi
 done
-#echo  ${result[@]}
+echo  ${result[@]}
 
 if (( ${#result[@]} )); then
     echo "No Changes in " ${result[@]}
     else 
-    echo "All packages has modified"
+    echo "No Package Changes from last commit"
 fi
 
 # for i in "${!codebase_packages[@]}";
