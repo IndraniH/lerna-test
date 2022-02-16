@@ -14,6 +14,7 @@ build_commit_hash=`git rev-list --no-merges -n1 HEAD`
 
 
 files="$(git diff-tree --no-commit-id --name-only -r $build_commit_hash)"
+filesNotChanged="!$(git diff-tree --no-commit-id --name-only -r $build_commit_hash)"
 packages=()
 
 
@@ -21,7 +22,20 @@ packages=()
 for file in $files
 do
     package="$(echo $file | cut -d '/' -f2)"
-    echo -e "files are $file $package"
+    echo -e "$package Changed."
+    # if test -d packages/$package; then 
+    #     # Retrieve the project build_priority in the package.json, default value is 50
+    #     priority="$(cat packages/$package/package.json | grep build_priority | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')"
+    #     if [ -z "$priority" ]; then
+    #         priority=50
+    #     fi   
+    #     packages+=($priority/$package);
+    # fi
+done
+for file in $filesNotChanged
+do
+    package="$(echo $file | cut -d '/' -f2)"
+    echo -e "No chnages to $package"
     # if test -d packages/$package; then 
     #     # Retrieve the project build_priority in the package.json, default value is 50
     #     priority="$(cat packages/$package/package.json | grep build_priority | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')"
