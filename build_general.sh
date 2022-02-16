@@ -13,6 +13,7 @@ build_commit_hash=`git rev-list --no-merges -n1 HEAD`
 
 
 files="$(git diff-tree --no-commit-id --name-only -r $build_commit_hash)"
+filesNotChanged="!$(git diff-tree --no-commit-id --name-only -r $build_commit_hash)"
 packages=()
 
 codebase_packages=("server-api" "web-client")
