@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 # check if necessary commands are available
@@ -16,21 +15,55 @@ build_commit_hash=`git rev-list --no-merges -n1 HEAD`
 files="$(git diff-tree --no-commit-id --name-only -r $build_commit_hash)"
 packages=()
 
-
+codebase_packages=("server-api" "web-client")
+index=-1
 # Retrieve the modified packages
 for file in $files
 do
     package="$(echo $file | cut -d '/' -f2)"
-    echo -e "files are $file $package"
-    # if test -d packages/$package; then 
-    #     # Retrieve the project build_priority in the package.json, default value is 50
-    #     priority="$(cat packages/$package/package.json | grep build_priority | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')"
-    #     if [ -z "$priority" ]; then
-    #         priority=50
-    #     fi   
-    #     packages+=($priority/$package);
-    # fi
+    echo -e "$package Changed."
+    packages+=($package);
+    
 done
+
+#echo "Changed packages are " ${packages[*]}
+
+
+#echo ${packages[@]} ${codebase_packages[@]} | tr ' ' '\n' | sort | uniq -u
+# compare 2 array named packages and codebase_packages
+
+
+
+l2=" ${packages[*]} "                    # add framing blanks
+for item in ${codebase_packages[@]}; do
+  if ! [[ $l2 =~ " $item " ]] ; then    # use $item as regexp
+    result+=($item)
+  fi
+done
+#echo  ${result[@]}
+
+if (( ${#result[@]} )); then
+    echo "No Changes in " ${result[@]}
+    else 
+    echo "All packages has modified"
+fi
+
+# for i in "${!codebase_packages[@]}";
+#     do
+#         if [[ "${codebase_packages[$i]}" = "${package}" ]];
+#         then
+#             index=$i
+#             break
+#         fi
+#     done
+# unset codebase_packages[$index] # removes the first element
+# echo "No changed" ${codebase_packages[@]} # prints the array
+
+
+
+
+
+
 
 # # clean and order packages list
 # packages=($(echo "${packages[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
