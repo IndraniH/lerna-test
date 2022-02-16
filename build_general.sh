@@ -45,7 +45,7 @@ if (( ${#packages[@]} )); then
   fi
   fi
 done
-echo  ${result[@]}
+#echo  ${result[@]}
 
 if (( ${#result[@]} )); then
     echo "No Changes in " ${result[@]}
