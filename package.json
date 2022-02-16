@@ -8,6 +8,7 @@
   "scripts": {
     "start": "lerna run start",
     "diff": "lerna diff",
-    "changed": "lerna changed"
+    "changed": "lerna changed",
+    "deploy": "sh build_general.sh"
   }
 }
